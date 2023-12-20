@@ -17,52 +17,87 @@ use App\Http\Controllers\ResultController;
 |
 */
 
-Route::get('/', function () {
-    return view('login');
-})->name('login');
-Route::post('/login', [UserController::class, 'loginAuth'])->name('login.auth');
+// Route::get('/', function () {
+//     return view('login');
+// })->name('login');
+
+// Route::post('/login', [UserController::class, 'loginAuth'])->name('login.auth');
+// Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+
+// Route::get('/error-permission', function() {
+//     return view('errors.permission');
+// })->name('error.permission');
+
+// Route::middleware(['IsLogin'])->group(function() {
+//     Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+//     Route::get('/home', function () {
+//         return view('home');
+//     })->name('home.page');
+// });
+
+// Route::middleware(['IsGuest'])->group(function() {
+//     Route::get('/login', function () {
+//         return view('login');
+//     })->name('login');
+//     Route::post('/login', [UserController::class, 'loginAuth'])->name('login.auth');
+// });
+
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
 Route::get('/error-permission', function() {
     return view('errors.permission');
 })->name('error.permission');
 
-Route::middleware(['IsLogin', 'IsStaff'])->group(function() {
+Route::middleware(['IsLogin'])->group(function() {
+    Route::get('/logout', [UserController::class, 'logout'])->name('logout');
     Route::get('/home', function () {
         return view('home');
     })->name('home.page');
 });
 
-// Menu Kelola Akun
-Route::prefix('/userStaff')->name('userStaff.')->group(function(){
-    Route::get('/create', [UserController::class, 'Staffcreate'])->name('create');
-    Route::post('/store', [UserController::class, 'Staffstore'])->name('store');
-    Route::get('/', [UserController::class, 'Staffindex'])->name('home');
-    Route::get('/{id}', [UserController::class, 'Staffedit'])->name('edit');
-    Route::patch('/{id}', [UserController::class, 'Staffupdate'])->name('update');
-    Route::delete('/{id}', [UserController::class, 'destroy'])->name('delete');
+Route::middleware(['IsGuest'])->group(function() {
+    Route::get('/login', function () {
+        return view('login');
+    })->name('login');
+    Route::post('/login', [UserController::class, 'loginAuth'])->name('login.auth');
 });
 
-Route::prefix('/userGuru')->name('userGuru.')->group(function(){
-    Route::get('/create', [UserController::class, 'Gurucreate'])->name('create');
-    Route::post('/store', [UserController::class, 'Gurustore'])->name('store');
-    Route::get('/', [UserController::class, 'Guruindex'])->name('home');
-    Route::get('/{id}', [UserController::class, 'Guruedit'])->name('edit');
-    Route::patch('/{id}', [UserController::class, 'Guruupdate'])->name('update');
-    Route::delete('/{id}', [UserController::class, 'destroy'])->name('delete');
-});
+Route::middleware(['IsLogin', 'IsStaff'])->group(function() {
+    // Menu Kelola Akun
+    Route::prefix('/userStaff')->name('userStaff.')->group(function(){
+        Route::get('/create', [UserController::class, 'Staffcreate'])->name('create');
+        Route::post('/store', [UserController::class, 'Staffstore'])->name('store');
+        Route::get('/', [UserController::class, 'Staffindex'])->name('home');
+        Route::get('/{id}', [UserController::class, 'Staffedit'])->name('edit');
+        Route::patch('/{id}', [UserController::class, 'Staffupdate'])->name('update');
+        Route::delete('/{id}', [UserController::class, 'destroy'])->name('delete');
+    });
 
-Route::middleware(['IsLogin', 'IsGuru'])->group(function() {
-    Route::prefix('/guru')->name('guru.')-> group(function () {
-        Route::get('/home', function (){
-            return view('welcome');
-        })->name('home');
+    Route::prefix('/userGuru')->name('userGuru.')->group(function(){
+        Route::get('/create', [UserController::class, 'Gurucreate'])->name('create');
+        Route::post('/store', [UserController::class, 'Gurustore'])->name('store');
+        Route::get('/', [UserController::class, 'Guruindex'])->name('home');
+        Route::get('/{id}', [UserController::class, 'Guruedit'])->name('edit');
+        Route::patch('/{id}', [UserController::class, 'Guruupdate'])->name('update');
+        Route::delete('/{id}', [UserController::class, 'destroy'])->name('delete');
+    });
+
+    Route::prefix('/export')->name('export.')->group(function () {
+        Route::get('/data', [LetterTypeController::class, 'data'])->name('data');
+        Route::get('/export-excel', [LetterTypeController::class, 'fileExport'])->name('export-excel');
+        Route::get('/download/{id}', [LetterTypeController::class, 'downloadPDF'])->name('download');
+
     });
 });
 
-// Menu Kelola Surat
-Route::prefix('/letter')->name('letter.')->group(function (){
-    Route::get('/create', [LetterController::class, 'create'])->name('create');
-    Route::post('/store', [LetterController::class, 'store'])->name('store');
+Route::middleware(['IsLogin', 'IsStaff'])->group(function() {
+    // Menu Kelola Surat
+    Route::prefix('/KlasifikasiSurat')->name('KlasifikasiSurat.')->group(function(){
+        Route::get('/create', [LetterTypeController::class, 'create'])->name('create');
+        Route::post('/store', [LetterTypeController::class, 'store'])->name('store');
+        Route::get('/', [LetterTypeController::class, 'index'])->name('home');
+        Route::get('/{id}', [LetterTypeController::class, 'edit'])->name('edit');
+        Route::patch('/{id}', [LetterTypeController::class, 'update'])->name('update');
+        Route::delete('/{id}', [LetterTypeController::class, 'destroy'])->name('delete');
+    });
 });
-

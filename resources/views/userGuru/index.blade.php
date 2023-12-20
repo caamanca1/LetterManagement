@@ -17,7 +17,7 @@
 
         <form action="" method="GET" class="form-inline my-2 my-lg-2 d-flex">
             {{-- <input class="form-control w-25 h-25 mr-sm-2" type="date" placeholder="Search" aria-label="Search" name="Date"> --}}
-            <input class="form-control w-25 h-25 mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="Date">
+            <input class="form-control w-25 h-25 mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="Search">
             &nbsp;<button class="btn btn-outline-primary my-0 my-sm-10" type="submit">Cari data</button>
             {{-- &nbsp;<button class="btn btn-outline-danger my-0 my-sm-10" type="Reset">Clear</button> --}}
         </form>

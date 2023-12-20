@@ -1,6 +1,11 @@
 @extends('layouts.template')
 
 @section('content')
+@if (Session::get('success'))
+    <div class="alert alert-success w-25 p-3 mt-0 mb-0" role="alert">
+      <strong>{{ Session::get('success') }}</strong>
+    </div>
+  @endif
 <div class="jumbotron py-4 px-5">
     <h1 class="display-4">
         Selamat Datang, {{ Auth::user()->name }}!

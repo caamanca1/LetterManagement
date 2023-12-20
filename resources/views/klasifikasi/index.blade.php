@@ -1,18 +1,29 @@
 @extends('layouts.template')
 
 @section('content')
+    @if (Session::get('deleted'))
+        <div class="alert alert-success w-25 p-3 mt-0 mb-0" role="alert">
+            <strong>{{ Session::get('deleted') }}</strong>
+        </div>
+    @endif
+    @if (Session::get('success'))
+        <div class="alert alert-success w-25 p-3 mt-0 mb-0" role="alert">
+            <strong>{{ Session::get('success') }}</strong>
+        </div>
+    @endif
     <h3 class="display-10">
-        Data Staff Tata Usaha
+        Data Klasifikasi Surat
     </h3>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{{ route('home.page') }}">Home</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Data Staff Tata Usaha</li>
+          <li class="breadcrumb-item active" aria-current="page">Data Klasifikasi Surat</li>
         </ol>
     </nav>
     <div class="container mt-3">
         <div class="d-flex justify-content-end">
-            <a href="{{ route('userStaff.create') }}" class="btn btn-primary">Tambah Data</a>
+            <a href="{{ route('KlasifikasiSurat.create') }}" class="btn btn-primary me-2">Tambah Data</a>
+            <a href="{{ route('export.export-excel') }}" class="btn btn-info me-2">Export Klasifikasi Surat</a>
         </div>
 
         <form action="" method="GET" class="form-inline my-2 my-lg-2 d-flex">
@@ -26,9 +37,9 @@
             <thead>
                 <tr>
                     <th class="text-center">No</th>
-                    <th>Nama</th>
-                    <th>Email</th>
-                    <th>Role</th>
+                    <th>Kode Surat</th>
+                    <th>Klasifikasi Surat</th>
+                    <th>Surat Tertaut</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -36,23 +47,22 @@
                 @php
                     $no = 1;
                 @endphp
-                @foreach ($users as $item)
-                    @if ($item['role'] == 'staff')
+                @foreach ($letterType as $item)
                         <tr>
                             <td class="text-center">{{ $no++ }}</td>
-                            <td>{{ $item['name'] }}</td>
-                            <td>{{ $item['email'] }}</td>
-                            <td>{{ $item['role'] }}</td>
+                            <td>{{ $item['letter_code']}}</td>
+                            <td>{{ $item['name_type'] }}</td>
+                            <td>0</td>
                             <td class="d-flex justify-content-center">
-                                <a href="{{ route('userStaff.edit', $item->id)}}" class="btn btn-primary me-3">Edit</a>
-                                <form action="{{ route('userStaff.delete', $item->id) }}" method="post">
+                                <a href="{{-- route('') --}}" class="btn btn-info me-3">Lihat</a>
+                                <a href="{{ route('KlasifikasiSurat.edit', $item->id)}}" class="btn btn-primary me-3">Edit</a>
+                                <form action="{{ route('KlasifikasiSurat.delete', $item->id) }}" method="post">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Hapus</button>
                                 </form>
                             </td>
                         </tr>
-                    @endif
                 @endforeach
             </tbody>
         </table>

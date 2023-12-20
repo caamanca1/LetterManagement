@@ -24,12 +24,12 @@
         <div class="mb-3 row">
             <label for="name" class="col-sm-2 col-form-label">Email: </label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="email" name="email" value="{{ $user->email }}">
+                <input type="email" class="form-control" id="email" name="email" value="{{ $user->email }}">
             </div>
         </div>
 
-        <div class="mb-3 row">
-            <label for="type" class="col-sm-2 col-form-label">Role: </label>
+        {{-- <div class="mb-3 row">
+            <label for="role" class="col-sm-2 col-form-label">Role: </label>
             <div class="col-sm-10">
                 <select name="role" id="role" class="form-select">
                     <option selected disabled hidden>Pilih</option> 
@@ -37,12 +37,12 @@
                     <option value="guru" {{ $user->role == 'guru' ? 'selected' : '' }}>guru</option>
                 </select>
             </div>
-        </div>
+        </div> --}}
 
         <div class="mb-3 row">
             <label for="stock" class="col-sm-2 col-form-label">Password: </label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="password" name="password">
+                <input type="password" class="form-control" id="password" name="password">
             </div>
         </div>
 

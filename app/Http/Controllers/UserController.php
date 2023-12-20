@@ -19,6 +19,13 @@ class UserController extends Controller
         ]);
 
         $user = $request->only(['email', 'password']);
+        // if (Auth::attempt($user)) {
+        //     if ($user->role == 'staff'){
+        //         return redirect()->route('home.page')->with('success', 'Login Berhasil!');
+        //     } else {
+        //         return redirect()->back()->with('failed', 'proses login gagal, silahkan coba kembali dengan data yang benar!');
+        //     }
+        // }
         if (Auth::attempt($user)) {
             return redirect()->route('home.page')->with('success', 'Login Berhasil!');
         } else {
@@ -41,17 +48,23 @@ class UserController extends Controller
     //     return view('home', compact('guru', 'staff'));  
     // }
 
-    public function Staffindex()
+    public function Staffindex(Request $request)
     {
         $users = User::all();
         return view('userStaff.index', compact('users'));
+        // $Search = $request->Search;
+        // $search = User::get('name')->where('name','LIKE',"%".$Search."%")->paginate(10);
+        // return view("userStaff.index", compact("search"));
         
     }
     
-    public function Guruindex()
+    public function Guruindex(Request $request)
     {
         $users = User::all();
         return view('userGuru.index', compact('users'));
+        // $Search = $request->Search;
+        // $search = User::get('name')->where('name','LIKE',"%".$Search."%")->paginate(10);
+        // return view("userGuru.index", compact("search"));
     }
     /**
      * Show the form for creating a new resource.
@@ -63,7 +76,7 @@ class UserController extends Controller
 
     public function Gurucreate()
     {
-        return view('userStaff.create');
+        return view('userGuru.create');
     }
 
     /**
@@ -93,7 +106,6 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|min:3',
             'email' => 'required',
-            'role' => 'required',
         ]);
 
         $password = substr($request->email, 0, 3).substr($request->name, 0, 3);
@@ -144,7 +156,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|min:3',
             'email' => 'required|email|unique:users,email,' . $id,
-            'role' => 'required|in:Admin,Cashier',
+            'role' => 'staff',
         ]);
 
         if ($request->password) {
@@ -152,14 +164,14 @@ class UserController extends Controller
             $user->update([
                 'name' => $request->name,
                 'email' => $request->email,
-                'role' => $request->role,
+                // 'role' => $request->role,
                 'password' => Hash::make($request->password),
             ]);
         } else {
             $user->update([
                 'name' => $request->name,
                 'email' => $request->email,
-                'role' => $request->role,
+                // 'role' => $request->role,
             ]);
         }
 
@@ -177,7 +189,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|min:3',
             'email' => 'required|email|unique:users,email,' . $id,
-            'role' => 'required|in:Admin,Cashier',
+            'role' => 'guru',
         ]);
 
         if ($request->password) {
@@ -185,14 +197,14 @@ class UserController extends Controller
             $user->update([
                 'name' => $request->name,
                 'email' => $request->email,
-                'role' => $request->role,
+                // 'role' => $request->role,
                 'password' => Hash::make($request->password),
             ]);
         } else {
             $user->update([
                 'name' => $request->name,
                 'email' => $request->email,
-                'role' => $request->role,
+                // 'role' => $request->role,
             ]);
         }
 

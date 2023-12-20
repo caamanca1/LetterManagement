@@ -33,12 +33,22 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Data Surat</a>
                             <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{-- route('klasifikasi.home') --}}">Data Klasifikasi Surat</a></li>
+                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ route('KlasifikasiSurat.home') }}">Data Klasifikasi Surat</a></li>
                                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{-- route('surat.home') --}}">Data Surat</a></li>
                             </ul>
                         </li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a href="{{ route('logout') }}" class="nav-link">Logout</a>
+                    </li> --}}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ Auth::user()->name }}</a>
+                        <ul class="dropdown-menu">
+                            @if (Auth::check())
+                            <li class="nav-item">
+                                <a href="{{ route('logout') }}" class="nav-link">Logout</a>
+                            </li>
+                            @endif
+                        </ul>
                     </li>
                 @endif
                 </ul>
