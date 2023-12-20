@@ -29,7 +29,6 @@
                                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ route('userGuru.home') }}">Data Guru</a></li>
                             </ul>
                         </li>
-                    @endif
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Data Surat</a>
                             <ul class="dropdown-menu">
@@ -37,16 +36,22 @@
                                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{-- route('surat.home') --}}">Data Surat</a></li>
                             </ul>
                         </li>
-                    {{-- <li class="nav-item">
-                        <a href="{{ route('logout') }}" class="nav-link">Logout</a>
-                    </li> --}}
+                        @endif
+                        @if (Auth::user()->role == "guru")
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Data Surat</a>
+                                <ul class="dropdown-menu">
+                                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{-- route('surat.home') --}}">Data Surat</a></li>
+                                </ul>
+                            </li>
+                        @endif
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ Auth::user()->name }}</a>
                         <ul class="dropdown-menu">
                             @if (Auth::check())
-                            <li class="nav-item">
-                                <a href="{{ route('logout') }}" class="nav-link">Logout</a>
-                            </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('logout') }}" class="nav-link">Logout</a>
+                                </li>
                             @endif
                         </ul>
                     </li>

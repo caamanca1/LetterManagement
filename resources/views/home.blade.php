@@ -12,6 +12,7 @@
     </h1>
     <hr class="my-4">
     {{-- <p>Aplikasi ini digunakan hanya oleh pegawai / Staff. Digunakan untuk mengelola Surat Tata Usaha.</p> --}}
+  @if (Auth::user()->role == "staff")
     <div class="row">
         <div class="col-sm-6 mb-2 mb-sm-0">
           <div class="card">
@@ -49,5 +50,17 @@
             </div>
         </div>
     </div>
+  @endif
+  @if(Auth::user()->role == 'guru')
+  <div class="row">
+    <div class="col-sm-6 mb-2 mb-sm-0">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Surat Masuk</h5>
+          <p class="card-text">{{ count(App\Models\Letter ::all()) }}</p>
+        </div>
+      </div>
+    </div>
+  @endif
 </div>
 @endsection
