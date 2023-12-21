@@ -67,11 +67,11 @@
                             <td>
                                 @if (Auth::check())
                                     @if(App\Models\Result::where('letter_id', $item->id)->exists())
-                                        <a href="{{ route('results.show', $item->id) }}" style="color: limegreen">Sudah Dibuat</a>
+                                        <a href="{{ route('result.show', $item->id) }}" style="color: limegreen">Sudah Dibuat</a>
                                         @else
                                         @if(Auth::user()->name == $item->user->name)
                                         @if(Auth::user()->role == 'guru')
-                                          <a href="{{ route('result.results', $item->id) }}"><button class="btn btn-success text-white">Buat Hasil</button></a>  
+                                          <a href="{{ route('result.results', $item->id) }}"><button class="btn btn-warning shadow-none">Buat Hasil</button></a>  
                                         @endif
                                         @else
                                         <a href="#" style="color: red">Belum Dibuat</a>

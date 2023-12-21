@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Results;
+use App\Models\Result;
 use App\Models\User;
 use App\Models\Letter;
 
@@ -52,17 +52,17 @@ class ResultsController extends Controller
 
         $request['presence_recipients'] = $arrayAssoc;
 
-        Results::create($request->all());
+        Result::create($request->all());
 
-        return redirect()->route('dataSurat.index')->with('success', 'Berhasil Menambah Data');
+        return redirect()->route('dataSurat.home')->with('success', 'Berhasil Menambah Data');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Results $results, $id)
+    public function show(Result $results, $id)
     {
-        $result = Results::where('letter_id', $id)->first();
+        $result = Result::where('letter_id', $id)->first();
 
         $user = User::where('role', 'guru')->get();
 

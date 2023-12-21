@@ -2,18 +2,17 @@
 
 @section('content')
     <div class="container">
-
+        <div class="mb-3 h3 mb-4">Hasil Rapat</div>
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{{ route('home.page') }}">Home</a></li>
-              <li class="breadcrumb-item"><a href="{{ route('dataSurat.home') }}">Daftar Surat</a></li>
+              <li class="breadcrumb-item"><a href="{{ route('dataSurat.home') }}">Data Surat</a></li>
               <li class="breadcrumb-item active" aria-current="page">Tambah Hasil Rapat</li>
             </ol>
           </nav>
 
-        <div class="mb-3 h3 mb-4">Hasil Rapat</div>
         <div class="card">
-            <div class="card-body">
+        <div class="card-body">
                 
         <form action="{{ route('result.store') }}" method="POST">
             @csrf

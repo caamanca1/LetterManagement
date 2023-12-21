@@ -135,7 +135,7 @@ Route::middleware(['IsLogin', 'IsGuru'])->group(function() {
     // Menu Result
     Route::prefix('/result')->name('result.')->group(function(){
        Route::get('/results/{id}', [ResultsController::class, 'create'])->name('results');
-       Route::get('/store', [ResultsController::class, 'store'])->name('store');
+       Route::post('/store', [ResultsController::class, 'store'])->name('store');
        Route::get('/show/{id}', [ResultsController::class, 'show'])->name('show');
 
     });
