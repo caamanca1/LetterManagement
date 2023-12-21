@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LetterController;
 use App\Http\Controllers\LetterTypeController;
-use App\Http\Controllers\ResultController;
+use App\Http\Controllers\ResultsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -42,21 +42,20 @@ use App\Http\Controllers\ResultController;
 //     Route::post('/login', [UserController::class, 'loginAuth'])->name('login.auth');
 // });
 
-Route::get('/logout', [UserController::class, 'logout'])->name('logout');
-
 Route::get('/error-permission', function() {
     return view('errors.permission');
 })->name('error.permission');
 
 Route::middleware(['IsLogin'])->group(function() {
     Route::get('/logout', [UserController::class, 'logout'])->name('logout');
-    Route::get('/home', function () {
-        return view('home');
-    })->name('home.page');
+    // Route::get('/home', function () {
+    //     return view('home');
+    // })->name('home.page');
+    Route::get('/home', [UserController::class, 'index'])->name('home.page');
 });
 
 Route::middleware(['IsGuest'])->group(function() {
-    Route::get('/login', function () {
+    Route::get('/', function () {
         return view('login');
     })->name('login');
     Route::post('/login', [UserController::class, 'loginAuth'])->name('login.auth');
@@ -135,11 +134,16 @@ Route::middleware(['IsLogin', 'IsStaff'])->group(function() {
 Route::middleware(['IsLogin', 'IsGuru'])->group(function() {
     // Menu Result
     Route::prefix('/result')->name('result.')->group(function(){
-       Route::get('/results/{id}', [ResultController::class, 'create'])->name('results');
-       Route::get('/store', [ResultController::class, 'store'])->name('store');
-       Route::get('/show/{id}', [ResultController::class, 'show'])->name('show');
+       Route::get('/results/{id}', [ResultsController::class, 'create'])->name('results');
+       Route::get('/store', [ResultsController::class, 'store'])->name('store');
+       Route::get('/show/{id}', [ResultsController::class, 'show'])->name('show');
 
     });
+
+    Route::prefix('/dataSurat')->name('dataSurat.')->group(function(){
+        Route::get('/', [LetterController::class, 'index'])->name('home');
+ 
+     });
 
     Route::prefix('/export')->name('export.')->group(function () {
         Route::get('/data', [LetterTypeController::class, 'data'])->name('data');

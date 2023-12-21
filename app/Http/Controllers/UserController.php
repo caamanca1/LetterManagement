@@ -42,11 +42,10 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    // public function index() {
-    //     $guru = User::where('role', 'guru')->count();
-    //     $staff = User::where('role', 'staff')->count();
-    //     return view('home', compact('guru', 'staff'));  
-    // }
+    public function index() {
+    
+        return view('home');  
+    }
 
     public function Staffindex(Request $request)
     {
