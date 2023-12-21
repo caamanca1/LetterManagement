@@ -88,6 +88,10 @@ Route::middleware(['IsLogin', 'IsStaff'])->group(function() {
         Route::get('/download/{id}', [LetterTypeController::class, 'downloadPDF'])->name('download');
 
     });
+
+    Route::prefix('/export-excel')->name('export-excel.')->group(function() {
+        Route::get('/export-excel', [LetterController::class, 'fileExport'])->name('export');
+    });
 });
 
 Route::middleware(['IsLogin', 'IsStaff'])->group(function() {
@@ -110,6 +114,36 @@ Route::middleware(['IsLogin', 'IsStaff'])->group(function() {
         Route::get('/', [LetterController::class, 'index'])->name('home');
         Route::get('/{id}', [LetterController::class, 'edit'])->name('edit');
         Route::patch('/{id}', [LetterController::class, 'update'])->name('update');
-        Route::delete('/{id}', [LetterController::class, 'destroy'])->name('delete');
+        Route::get('/print/{id}', [LetterController::class, 'show'])->name('print');
+        Route::get('/download/{id}', [LetterController::class, 'downloadPDF'])->name('download');
+        Route::delete('/{id}', [LetterTypeController::class, 'destroy'])->name('delete');
+    });
+});
+
+// Route::middleware(['IsLogin', 'IsStaff'])->group(function() {
+//     // Menu Kelola Surat
+//     Route::prefix('/dataSurat')->name('dataSurat.')->group(function(){
+//         Route::get('/create', [LetterController::class, 'create'])->name('create');
+//         Route::post('/store', [LetterController::class, 'store'])->name('store');
+//         Route::get('/', [LetterController::class, 'index'])->name('home');
+//         Route::get('/{id}', [LetterController::class, 'edit'])->name('edit');
+//         Route::patch('/{id}', [LetterController::class, 'update'])->name('update');
+//         Route::delete('/{id}', [LetterTypeController::class, 'destroy'])->name('delete');
+//     });
+// });
+
+Route::middleware(['IsLogin', 'IsGuru'])->group(function() {
+    // Menu Result
+    Route::prefix('/result')->name('result.')->group(function(){
+       Route::get('/results/{id}', [ResultController::class, 'create'])->name('results');
+       Route::get('/store', [ResultController::class, 'store'])->name('store');
+       Route::get('/show/{id}', [ResultController::class, 'show'])->name('show');
+
+    });
+
+    Route::prefix('/export')->name('export.')->group(function () {
+        Route::get('/data', [LetterTypeController::class, 'data'])->name('data');
+        Route::get('/export-excel', [LetterTypeController::class, 'fileExport'])->name('export-excel');
+        Route::get('/download/{id}', [LetterTypeController::class, 'downloadPDF'])->name('download');
     });
 });

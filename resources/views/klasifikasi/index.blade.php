@@ -52,7 +52,7 @@
                             <td class="text-center">{{ $no++ }}</td>
                             <td>{{ $item['letter_code']}}</td>
                             <td>{{ $item['name_type'] }}</td>
-                            <td>0</td>
+                            <td>{{ App\Models\Letter::where('letter_type_id', $item->id)->count() }}</td>
                             <td class="d-flex justify-content-center">
                                 <a href="{{-- route('') --}}" class="btn btn-info me-3">Lihat</a>
                                 <a href="{{ route('KlasifikasiSurat.edit', $item->id)}}" class="btn btn-primary me-3">Edit</a>

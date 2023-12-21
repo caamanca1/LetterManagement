@@ -3,7 +3,7 @@
 namespace App\Exports;
 
 use App\Models\Letter_type;
-use App\Models\Letters;
+use App\Models\Letter;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -31,7 +31,7 @@ class LetterExport implements FromCollection, WithHeadings, WithMapping, ShouldA
         return [
             $item->letter_code,
             $item->name_type,
-            // Letters::where('letter_type_id', $item->id)->count()
+            Letter::where('letter_type_id', $item->id)->count()
         ];
     }
 }

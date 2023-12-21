@@ -6,6 +6,7 @@ use App\Models\Letter_type;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\LetterExport;
 use Illuminate\Http\Request;
+use PDF;
 
 class LetterTypeController extends Controller
 {
@@ -36,8 +37,9 @@ class LetterTypeController extends Controller
             'name_type' => 'required',
         ]);
         $no = Letter_type::count()+1;
+        $code = $request->letter_code . '-' . $no;
         Letter_type::create([
-            'letter_code' => $request->letter_code . '-' . $no,
+            'letter_code' => $code,
             'name_type' => $request->name_type,
         ]);
 

@@ -18,7 +18,7 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Surat Keluar</h5>
-              <p class="card-text">{{ count(App\Models\Letter ::all()) }}</p>
+              <p class="card-text">{{ count(App\Models\Letter::all()) }}</p>
             </div>
           </div>
         </div>
@@ -51,16 +51,16 @@
         </div>
     </div>
   @endif
-  {{-- @if(Auth::user()->role == 'guru')
+  @if(Auth::user()->role == 'guru')
   <div class="row">
     <div class="col-sm-6 mb-2 mb-sm-0">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Surat Masuk</h5>
-          <p class="card-text">{{ count(App\Models\Letter ::all()) }}</p>
+          <p class="card-text">{{ count(App\Models\Letter::all()) }}</p>
         </div>
       </div>
     </div>
-  @endif --}}
+  @endif
 </div>
 @endsection

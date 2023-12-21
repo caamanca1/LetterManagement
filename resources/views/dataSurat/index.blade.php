@@ -23,7 +23,7 @@
     <div class="container mt-3">
         <div class="d-flex justify-content-end">
             <a href="{{ route('dataSurat.create') }}" class="btn btn-primary me-2">Tambah Data</a>
-            <a href="{{ route('export.export-excel') }}" class="btn btn-info me-2">Export Data Surat</a>
+            <a href="{{ route('export-excel.export') }}" class="btn btn-info me-2">Export Data Surat</a>
         </div>
 
         <form action="" method="GET" class="form-inline my-2 my-lg-2 d-flex">
@@ -43,7 +43,7 @@
                     <th>Penerima Surat</th>
                     <th>Notulis</th>
                     <th>Hasil Rapat</th>
-                    <th>Action</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -54,7 +54,12 @@
                 @foreach ($letter as $item)
                         <tr>
                             <td class="text-center">{{ $no++ }}</td>
-                            <td>{{ $item->letter_type_id }}</td>
+                            <td>@if(isset($item['letter_type_id']))
+                                {{ $item->LetterType->letter_code }}/000{{ $item->letter_type_id }}/SMK Wikrama/{{ $item['created_at']->format('Y') }}
+                                @else
+                                    No Notulis Assigned
+                                @endif
+                            </td>
                             <td>{{ $item->letter_perihal }}</td>
                             <td>{{ $item->created_at->format('d/m/Y') }}</td>
                             <td>{{ implode(', ', array_column($item->recipients, 'name')) }}</td>
@@ -75,17 +80,17 @@
                                     @else
                                 @endif
                             </td>
+                            @if(Auth::user()->role == 'staff')
                             <td class="d-flex justify-content-center">
-                                @if(Auth::user()->role == 'staff')
-                                    <a href="{{-- route('') --}}" class="btn btn-info me-3">Lihat</a>
-                                    <a href="{{ route('dataSurat.edit', $item->id)}}" class="btn btn-primary me-3">Edit</a>
-                                    <form action="{{ route('dataSurat.delete', $item->id) }}" method="post">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Hapus</button>
-                                    </form>
-                                @endif
+                                <a href="{{ route('dataSurat.print', $item->id) }}" class="btn btn-info me-3">Lihat</a>
+                                <a href="{{ route('dataSurat.edit', $item->id)}}" class="btn btn-primary me-3">Edit</a>
+                                <form action="{{ route('dataSurat.delete', $item->id) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Hapus</button>
+                                </form>
                             </td>
+                            @endif
                         </tr>
                 @endforeach
                 @endif

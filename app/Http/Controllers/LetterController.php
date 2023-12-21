@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Result;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\LetterExport;
+use App\Exports\SuratExport;
 use Illuminate\Http\Request;
 use PDF;
 
@@ -18,8 +19,10 @@ class LetterController extends Controller
      */
     public function index(Request $request)
     {
-        $letter = Letter::all();
-        return view('dataSurat.index', compact('letter'));
+        $letter = Letter::with('results', 'user', 'LetterType')->get();
+        $user = User::where('role', 'guru')->get(['id', 'name']);
+        // $letter_code = $item->LetterType->letter_code . '/' . '000' . $item->letter_type_id . '/' . 'SMK Wikrama' . '/' . $item['created_at']->format('Y');
+        return view('dataSurat.index', compact('letter', 'user'));
     }
 
     /**
@@ -54,7 +57,7 @@ class LetterController extends Controller
         }
 
         $request['recipients'] = $arrayAssoc;
-
+        $no = Letter_type::count()+1;
         Letter::create([
             'letter_perihal' => $request->letter_perihal,
             'letter_type_id' => $request->letter_type_id,
@@ -141,7 +144,7 @@ class LetterController extends Controller
 
     public function fileExport() 
     {
-        return Excel::download(new LetterExport, 'Data-Surat.xlsx');
+        return Excel::download(new SuratExport, 'Data-Surat.xlsx');
     } 
 
     public function downloadPDF($id) {
@@ -155,6 +158,7 @@ class LetterController extends Controller
 
         $pdf = PDF::loadView('dataSurat.download', compact('surat'));
 
-        return $pdf->download('receipt.pdf');
+        return $pdf->download('Data-Surat.pdf');
     }
+
 }
