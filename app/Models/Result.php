@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Letter;
+use App\Models\User;
+use App\Models\Result;
 
 class Result extends Model
 {
@@ -18,4 +21,8 @@ class Result extends Model
     protected $casts = [
         'presence_recipients' => 'array',
     ];
+
+    public function letter() {
+        return $this->belongsTo(Letter::class);
+    }
 }

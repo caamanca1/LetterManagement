@@ -3,16 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Letter;
+use App\Models\Letter_type;
+use App\Models\User;
+use App\Models\Result;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\LetterExport;
 use Illuminate\Http\Request;
+use PDF;
 
 class LetterController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $letter = Letter::all();
+        return view('dataSurat.index', compact('letter'));
     }
 
     /**
@@ -20,7 +27,9 @@ class LetterController extends Controller
      */
     public function create()
     {
-        //
+        $letter = Letter_type::all();
+        $user = User::where('role', 'guru')->get();
+        return view('dataSurat.create', compact('letter', 'user'));
     }
 
     /**
@@ -28,38 +37,124 @@ class LetterController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $arrayDistinct = array_count_values($request->recipients);
+        $arrayAssoc = [];
+        
+        foreach ($arrayDistinct as $id => $count) {
+            $user = User::find($id);
+
+            if ($user) {
+                $arrayItem = [
+                    "id" => $id,
+                    "name" => $user->name,
+                ];
+
+                array_push($arrayAssoc, $arrayItem);
+            }
+        }
+
+        $request['recipients'] = $arrayAssoc;
+
+        Letter::create([
+            'letter_perihal' => $request->letter_perihal,
+            'letter_type_id' => $request->letter_type_id,
+            'content' => $request->content,
+            'recipients' => $request->recipients,
+            'attachment' => $request->attachment,
+            'notulis' => $request->notulis,
+        ]);
+
+        return redirect()->route('dataSurat.home')->with('success', 'Berhasil Menambah Data!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Letter $letter)
+    public function show($id)
     {
-        //
+        $surat = Letter::find($id);
+        $user = User::all();
+
+        return view('dataSurat.print', compact('surat', 'user'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Letter $letter)
+    public function edit(Letter $letter, $id)
     {
-        //
+        $letter = Letter_type::all();
+
+        $surat = Letter::findOrFail($id);
+
+        $user = User::where('role', 'guru')->get(['id', 'name']);
+
+        return view('dataSurat.edit', compact('letter', 'surat', 'user'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Letter $letter)
+    public function update(Request $request, Letter $Letter, $id)
     {
-        //
+        $recipients = $request->recipients ?? [];
+
+        $arrayDistinct = array_count_values($recipients);
+        $arrayAssoc = [];
+        
+        foreach ($arrayDistinct as $UserId => $count) {
+            $user = User::find($UserId);
+
+            if ($user) {
+                $arrayItem = [
+                    "id" => $id,
+                    "name" => $user->name,
+                ];
+
+                array_push($arrayAssoc, $arrayItem);
+            }
+        }
+
+        $request['recipients'] = $arrayAssoc;
+
+        $Letter->where('id', $id)->update([
+            'letter_perihal' => $request->letter_perihal,
+            'letter_type_id' => $request->letter_type_id,
+            'content' => $request->content,
+            'recipients' => $request->recipients,
+            'attachment' => $request->attachment,
+            'notulis' => $request->notulis,
+        ]);
+
+        return redirect()->route('dataSurat.home')->with('success', 'Berhasil Mengubah Data!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Letter $letter)
+    public function destroy(Letter $letter, $id)
     {
-        //
+        Letter::where('id', $id)->delete();
+
+        return redirect()->back()->with('deleted', 'Berhasil Menghapus Data!');
+    }
+
+    public function fileExport() 
+    {
+        return Excel::download(new LetterExport, 'Data-Surat.xlsx');
+    } 
+
+    public function downloadPDF($id) {
+        $surat = Letter::find($id);
+
+        if (!$surat) {
+            return response()->json(['error' => 'Surat tidak ditemukan', 404]);
+        }
+
+        view()->share('surat', $surat);
+
+        $pdf = PDF::loadView('dataSurat.download', compact('surat'));
+
+        return $pdf->download('receipt.pdf');
     }
 }

@@ -106,4 +106,6 @@ class LetterTypeController extends Controller
     {
         return Excel::download(new LetterExport, 'Klasifikasi-Surat.xlsx');
     } 
+
+   
 }

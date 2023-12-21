@@ -101,3 +101,15 @@ Route::middleware(['IsLogin', 'IsStaff'])->group(function() {
         Route::delete('/{id}', [LetterTypeController::class, 'destroy'])->name('delete');
     });
 });
+
+Route::middleware(['IsLogin', 'IsStaff'])->group(function() {
+    // Menu Kelola Surat
+    Route::prefix('/dataSurat')->name('dataSurat.')->group(function(){
+        Route::get('/create', [LetterController::class, 'create'])->name('create');
+        Route::post('/store', [LetterController::class, 'store'])->name('store');
+        Route::get('/', [LetterController::class, 'index'])->name('home');
+        Route::get('/{id}', [LetterController::class, 'edit'])->name('edit');
+        Route::patch('/{id}', [LetterController::class, 'update'])->name('update');
+        Route::delete('/{id}', [LetterController::class, 'destroy'])->name('delete');
+    });
+});

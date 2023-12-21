@@ -51,7 +51,7 @@
         </div>
     </div>
   @endif
-  @if(Auth::user()->role == 'guru')
+  {{-- @if(Auth::user()->role == 'guru')
   <div class="row">
     <div class="col-sm-6 mb-2 mb-sm-0">
       <div class="card">
@@ -61,6 +61,6 @@
         </div>
       </div>
     </div>
-  @endif
+  @endif --}}
 </div>
 @endsection
